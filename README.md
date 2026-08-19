@@ -30,3 +30,12 @@ If you are developing a production application, we recommend enabling type-aware
 ```
 
 See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+
+
+3D 기구학 & FTO 시뮬레이터: RoboticArmCanvas.tsx, FtoSimulatorView.tsx
+3D 공간 약도 & 실증 예약: IsometricMapCanvas.tsx, SpatialMapView.tsx
+특허 공백기술 & 패밀리트리: WhiteSpaceView.tsx
+특허 동향 & 지식 커뮤니티: PatentTrendsView.tsx, CommunityView.tsx
+수파베이스 & 소셜 OAuth 인증: supabaseClient.ts, AuthContext.tsx, AuthModal.tsx
+Cloudflare 배포 & GitHub Actions: wrangler.toml, .github/workflows/deploy.yml
+단위 및 통합 테스트 스위트 (7개 파일): src/test/*.test.tsx (22개 테스트 통과)
