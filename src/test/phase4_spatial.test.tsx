@@ -24,7 +24,7 @@ describe('Phase 4: 3D Spatial Map & Testbed Booking', () => {
     expect(screen.getAllByText(/특허청 첨단 피지컬 AI 특허 기술지원 센터/i).length).toBeGreaterThan(0);
   });
 
-  it('allows user to book a testbed slot', () => {
+  it('allows user to book a testbed slot and opens verified QR pass', () => {
     render(<SpatialMapView />);
     const slotButton = screen.getByRole('button', { name: '16:30 - 18:30' });
     fireEvent.click(slotButton);
@@ -32,6 +32,7 @@ describe('Phase 4: 3D Spatial Map & Testbed Booking', () => {
     const bookButton = screen.getByRole('button', { name: /실증 세션 및 법률 에스코트 즉시 예약/i });
     fireEvent.click(bookButton);
 
-    expect(screen.getByText(/예약 완료! \(변리사 동행 확인서 발급\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/예약 완료! \(QR 출입증 발급됨\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/VERIFIED RESERVATION PASS/i)).toBeInTheDocument();
   });
 });

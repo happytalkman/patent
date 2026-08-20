@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { KinematicState } from '../../types';
 
@@ -133,9 +133,9 @@ export const RoboticArmCanvas: React.FC<RoboticArmCanvasProps> = ({
       const elapsedTime = clock.getElapsedTime();
 
       // Apply kinematics
-      shoulderGroup.rotation.y = (kinematicState.joint1Angle * Math.PI) / 180 + Math.sin(elapsedTime * 0.5) * 0.05;
-      elbowGroup.rotation.z = (kinematicState.joint2Angle * Math.PI) / 180;
-      wristGroup.rotation.x = (kinematicState.joint3Angle * Math.PI) / 180;
+      shoulderGroup.rotation.y = (kinematicState.joint1 * Math.PI) / 180 + Math.sin(elapsedTime * 0.5) * 0.05;
+      elbowGroup.rotation.z = (kinematicState.joint2 * Math.PI) / 180;
+      wristGroup.rotation.x = (kinematicState.joint3 * Math.PI) / 180;
 
       // Subtle slow scene rotation
       camera.position.x = 4.5 * Math.cos(elapsedTime * 0.1);

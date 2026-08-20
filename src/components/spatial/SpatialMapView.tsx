@@ -1,19 +1,20 @@
 ﻿import React, { useState } from 'react';
-import { TestbedFacility } from '../../types';
+import type { TestbedFacility } from '../../types';
 import { mockFacilities } from '../../data/mockData';
 import { IsometricMapCanvas } from './IsometricMapCanvas';
 import { 
   MapPin, 
-  Compass, 
   Calendar, 
   ShieldCheck, 
-  Layers, 
-  Clock, 
-  DollarSign, 
   Star, 
   Check, 
-  Maximize2, 
-  RotateCw 
+  RotateCw, 
+  Activity, 
+  Radio, 
+  QrCode, 
+  Zap, 
+  Thermometer, 
+  Sliders 
 } from 'lucide-react';
 
 export const SpatialMapView: React.FC = () => {
@@ -27,6 +28,7 @@ export const SpatialMapView: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string>('2026-08-25');
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>('14:00 - 16:00');
   const [bookingConfirmed, setBookingConfirmed] = useState<boolean>(false);
+  const [showQrPass, setShowQrPass] = useState<boolean>(false);
 
   const selectedFacility = facilities.find(f => f.id === selectedFacilityId) || facilities[0];
 
@@ -36,7 +38,7 @@ export const SpatialMapView: React.FC = () => {
 
   const handleBook = () => {
     setBookingConfirmed(true);
-    setTimeout(() => setBookingConfirmed(false), 4000);
+    setShowQrPass(true);
   };
 
   return (
@@ -46,13 +48,13 @@ export const SpatialMapView: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-xs font-mono text-nexus-cyan mb-1">
             <MapPin className="w-4 h-4" />
-            <span>3D SPATIAL IP ECOSYSTEM (NANOBANANA-2 STYLE)</span>
+            <span>3D SPATIAL IP ECOSYSTEM & LIVE IoT TELEMETRY</span>
           </div>
           <h1 className="text-xl md:text-2xl font-bold font-sora text-white">
             피지컬 AI 3D 공간 약도 & 공인 실증 테스트베드 예약
           </h1>
           <p className="text-xs md:text-sm text-slate-400 mt-1">
-            특허청, 국가 로봇 실증 시험장, 클린룸 팹의 3D 아이소메트릭 약도 탐색 및 원클릭 타임슬롯 예약
+            특허청, 국가 로봇 실증 시험장, 클린룸 팹의 3D 아이소메트릭 약도 탐색, 실시간 환경 계측 센서 스트리밍 및 원클릭 출입증 발급
           </p>
         </div>
 
@@ -103,12 +105,12 @@ export const SpatialMapView: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
               <span className="w-2.5 h-2.5 rounded-full bg-nexus-emerald animate-ping" />
-              <span>실시간 3D 공간 맵: 건물을 클릭하여 예약 정보를 확인하세요</span>
+              <span>실시간 3D 공간 맵: 건물을 클릭하여 예약 및 센서 정보를 확인하세요</span>
             </div>
             <span className="text-[11px] font-mono text-nexus-cyan">Three.js Rendered</span>
           </div>
 
-          <div className="h-96 w-full bg-nexus-bg rounded-xl relative overflow-hidden border border-white/5">
+          <div className="h-80 w-full bg-nexus-bg rounded-xl relative overflow-hidden border border-white/5">
             <IsometricMapCanvas
               facilities={filteredFacilities}
               selectedFacilityId={selectedFacilityId}
@@ -122,6 +124,36 @@ export const SpatialMapView: React.FC = () => {
               <div className="text-slate-300">거리: {selectedFacility.distanceKm} km | 잔여 슬롯: {selectedFacility.openSlots}개</div>
             </div>
           </div>
+
+          {/* Real-time IoT Sensor Telemetry Stream */}
+          {selectedFacility.telemetry && (
+            <div className="p-3 bg-nexus-surface/90 rounded-xl border border-white/5 space-y-2">
+              <div className="flex items-center justify-between text-xs font-mono text-nexus-cyan">
+                <span className="flex items-center gap-1.5 font-bold">
+                  <Radio className="w-3.5 h-3.5 text-nexus-emerald animate-pulse" /> 실시간 IoT 센서 텔레메트리 (Live Telemetry)
+                </span>
+                <span className="text-slate-400">장비 ID: {selectedFacility.telemetry.activeRobotId}</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] font-mono">
+                <div className="p-2 bg-nexus-panel rounded-lg border border-white/5">
+                  <span className="text-slate-400 block">챔버 온도</span>
+                  <span className="text-white font-bold">{selectedFacility.telemetry.ambientTempC} °C</span>
+                </div>
+                <div className="p-2 bg-nexus-panel rounded-lg border border-white/5">
+                  <span className="text-slate-400 block">EMP 차폐율</span>
+                  <span className="text-nexus-cyan font-bold">{selectedFacility.telemetry.emShieldingDb} dB</span>
+                </div>
+                <div className="p-2 bg-nexus-panel rounded-lg border border-white/5">
+                  <span className="text-slate-400 block">MoCap 샘플링</span>
+                  <span className="text-nexus-emerald font-bold">{selectedFacility.telemetry.mocapFrameRateFps} FPS</span>
+                </div>
+                <div className="p-2 bg-nexus-panel rounded-lg border border-white/5">
+                  <span className="text-slate-400 block">동역학 스트레인</span>
+                  <span className="text-nexus-purple font-bold">{selectedFacility.telemetry.strainGaugeMicroStrain} µε</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Mini Facilities List Below Map */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
@@ -222,11 +254,11 @@ export const SpatialMapView: React.FC = () => {
 
             <button
               onClick={handleBook}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-nexus-cyan to-nexus-blue text-black font-bold text-xs hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-nexus-cyan/20"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-nexus-cyan to-nexus-blue text-black font-bold text-xs hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-nexus-cyan/20 cursor-pointer"
             >
               {bookingConfirmed ? (
                 <>
-                  <Check className="w-4 h-4" /> 예약 완료! (변리사 동행 확인서 발급)
+                  <Check className="w-4 h-4" /> 예약 완료! (QR 출입증 발급됨)
                 </>
               ) : (
                 <>
@@ -237,6 +269,41 @@ export const SpatialMapView: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* QR Entry Pass Modal */}
+      {showQrPass && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+          <div className="w-full max-w-sm bg-nexus-panel border border-nexus-cyan/40 rounded-3xl p-6 shadow-2xl text-center space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-nexus-cyan/20 text-nexus-cyan flex items-center justify-center mx-auto">
+              <QrCode className="w-7 h-7" />
+            </div>
+            <div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-nexus-emerald/20 text-nexus-emerald border border-nexus-emerald/30">
+                VERIFIED RESERVATION PASS
+              </span>
+              <h3 className="text-base font-bold text-white mt-1.5">{selectedFacility.name}</h3>
+              <p className="text-xs text-slate-400 mt-1">{selectedDate} ({selectedTimeSlot})</p>
+            </div>
+
+            <div className="p-4 bg-white rounded-2xl inline-block shadow-inner">
+              <div className="w-40 h-40 border-4 border-slate-900 rounded-lg flex items-center justify-center font-mono text-xs text-slate-900 font-bold bg-slate-100">
+                [QR: PHY-IP-PASS-2026]
+              </div>
+            </div>
+
+            <p className="text-[11px] text-slate-400 font-mono">
+              현장 방문 시 게이트 리더기에 태그하십시오. (변리사 1:1 에스코트 자동 활성화)
+            </p>
+
+            <button
+              onClick={() => setShowQrPass(false)}
+              className="w-full py-2.5 rounded-xl bg-nexus-cyan text-black font-bold text-xs hover:brightness-110 transition-all"
+            >
+              확인 및 닫기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

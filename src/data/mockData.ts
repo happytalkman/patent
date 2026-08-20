@@ -1,4 +1,15 @@
-﻿import { PatentTrendPoint, DomainTrend, BookItem, PaperItem, ForumPost, TestbedFacility, ClaimElement, DesignAroundSuggestion, WhiteSpaceNode, PatentFamilyNode } from '../types';
+﻿import type { 
+  PatentTrendPoint, 
+  DomainTrend, 
+  BookItem, 
+  PaperItem, 
+  ForumPost, 
+  TestbedFacility, 
+  WhiteSpaceNode, 
+  PatentFamilyNode,
+  CompetitorPowerProfile,
+  AiDisputeScenario 
+} from '../types';
 
 export const mockPatentTrends: PatentTrendPoint[] = [
   { yearQuarter: '2023 Q1', KR: 4200, US: 11200, CN: 15400, EP: 6100, JP: 5200 },
@@ -33,7 +44,14 @@ export const mockFacilities: TestbedFacility[] = [
     ndaVerified: true,
     openSlots: 4,
     coordinates: [-2, 0, 1.5],
-    rating: 4.9
+    rating: 4.9,
+    telemetry: {
+      ambientTempC: 22.4,
+      emShieldingDb: 110.5,
+      mocapFrameRateFps: 240,
+      strainGaugeMicroStrain: 142.8,
+      activeRobotId: 'NEXUS-HUMANOID-7DOF'
+    }
   },
   {
     id: 'fac-2',
@@ -48,7 +66,14 @@ export const mockFacilities: TestbedFacility[] = [
     ndaVerified: true,
     openSlots: 2,
     coordinates: [1.8, 0, -1.2],
-    rating: 4.8
+    rating: 4.8,
+    telemetry: {
+      ambientTempC: 21.0,
+      emShieldingDb: 85.0,
+      mocapFrameRateFps: 120,
+      strainGaugeMicroStrain: 45.2,
+      activeRobotId: 'KIPO-EXAM-PROTOTYPE'
+    }
   },
   {
     id: 'fac-3',
@@ -63,7 +88,14 @@ export const mockFacilities: TestbedFacility[] = [
     ndaVerified: true,
     openSlots: 1,
     coordinates: [-1.5, 0, -2.5],
-    rating: 4.7
+    rating: 4.7,
+    telemetry: {
+      ambientTempC: 19.8,
+      emShieldingDb: 125.0,
+      mocapFrameRateFps: 480,
+      strainGaugeMicroStrain: 12.0,
+      activeRobotId: 'TACTILE-SKIN-ARRAY-V3'
+    }
   }
 ];
 
@@ -100,6 +132,46 @@ export const mockWhiteSpaces: WhiteSpaceNode[] = [
     suggestedClaim: '독립항 1: 스파이킹 신경망(SNN) 기반 이벤트 드리븐 방식으로 미끄러짐(Slippage) 전조 증상을 1ms 내 감지하는 비동기식 인공 피부 어레이.',
     noveltyRationale: '전통적 프레임 기반 샘플링의 대역폭 한계를 극복하는 초저전력 이벤트 감지 구조로 표준특허(SEP) 선점 기회 존재.',
     filingStrategy: '원천 알고리즘 특허와 센서 회로 기구 특허의 포트폴리오 동시 분할 출원'
+  }
+];
+
+export const mockFamilyTrees: PatentFamilyNode[] = [
+  {
+    id: 'fam-1',
+    patentNumber: 'US 11,492,048 B2',
+    title: 'Vision-Based Closed Loop Actuation System for Humanoid Robotics',
+    assignee: 'Tesla, Inc.',
+    country: 'US',
+    filingDate: '2022-04-15',
+    status: 'GRANTED',
+    childrenIds: ['fam-1-kr', 'fam-1-ep', 'fam-1-cn']
+  },
+  {
+    id: 'fam-1-kr',
+    patentNumber: 'KR 10-2023-0189201 A',
+    title: '휴머노이드 로봇의 비전 기반 폐루프 액추에이터 구동 시스템',
+    assignee: 'Tesla, Inc.',
+    country: 'KR',
+    filingDate: '2023-04-10',
+    status: 'PENDING'
+  },
+  {
+    id: 'fam-1-ep',
+    patentNumber: 'EP 4,198,203 A1',
+    title: 'Actuation and Spatial Vision System for Humanoid Robots',
+    assignee: 'Tesla, Inc.',
+    country: 'EP',
+    filingDate: '2023-04-12',
+    status: 'PENDING'
+  },
+  {
+    id: 'fam-2',
+    patentNumber: 'US 10,882,192 B1',
+    title: 'Dynamic Balancing and Whole-Body Impedance Control in Bipedal Robots',
+    assignee: 'Boston Dynamics, Inc.',
+    country: 'US',
+    filingDate: '2021-08-20',
+    status: 'LITIGATED'
   }
 ];
 
@@ -178,42 +250,37 @@ export const mockForumPosts: ForumPost[] = [
     tags: ['Patent Eligibility', 'USPTO', 'RL Reward']
   }
 ];
-export const mockFamilyTrees: PatentFamilyNode[] = [
+
+export const mockCompetitors: CompetitorPowerProfile[] = [
+  { company: 'Tesla (Optimus)', score: 92, actuatorPatents: 148, vlaSpatialPatents: 215, sensorPatents: 84, litigationRisk: 'HIGH', keyPatent: 'US 11,492,048 B2' },
+  { company: 'Boston Dynamics (Atlas)', score: 95, actuatorPatents: 320, vlaSpatialPatents: 140, sensorPatents: 112, litigationRisk: 'HIGH', keyPatent: 'US 10,882,192 B1' },
+  { company: 'Figure AI (Figure 02)', score: 84, actuatorPatents: 96, vlaSpatialPatents: 178, sensorPatents: 65, litigationRisk: 'MEDIUM', keyPatent: 'US 11,894,002 A1' },
+  { company: 'Sanctuary AI (Phoenix)', score: 79, actuatorPatents: 110, vlaSpatialPatents: 125, sensorPatents: 92, litigationRisk: 'MEDIUM', keyPatent: 'CA 3,198,201 A1' },
+  { company: '현대차 로보틱스랩 (DAL-e)', score: 88, actuatorPatents: 180, vlaSpatialPatents: 110, sensorPatents: 95, litigationRisk: 'LOW', keyPatent: 'KR 10-2024-0019281 A' },
+];
+
+export const mockDisputes: AiDisputeScenario[] = [
   {
-    id: 'fam-1',
-    patentNumber: 'US 11,492,048 B2',
-    title: 'Vision-Based Closed Loop Actuation System for Humanoid Robotics',
-    assignee: 'Tesla, Inc.',
-    country: 'US',
-    filingDate: '2022-04-15',
-    status: 'GRANTED',
-    childrenIds: ['fam-1-kr', 'fam-1-ep', 'fam-1-cn']
+    id: 'disp-1',
+    targetPatent: 'Tesla US 11,492,048 B2 (손목 하모닉 드라이브 감속기 구동계)',
+    plaintiffArgument: '원고(Tesla)는 자사 특허 청구항 1의 "동축 하모닉 감속기 및 2축 짐벌 배치"가 피고의 7-DoF 로봇 팔 손목과 동일한 기구학적 구성을 가진다고 주장함.',
+    defenseStrategy: '피고는 준직접구동(QDD) 플래너터리 기어박스를 채택하여 감속비를 85:1에서 18:1로 완전히 변경하고 백드라이브 가능성을 물리적으로 구현하여 구성요소완비의 원칙(All-Elements Rule) 불충족 입증.',
+    successProbability: 92,
+    recommendedModifications: [
+      '손목 액추에이터를 하모닉 드라이브에서 사이클로이드/QDD 복합형으로 변경',
+      '토크 센싱 피드백 제어 주기를 1kHz에서 4kHz 분산형 임피던스 제어로 분리',
+      '명세서에 "탄성 변형 링 기구 불포함"을 명시적으로 한정하여 출원'
+    ]
   },
   {
-    id: 'fam-1-kr',
-    patentNumber: 'KR 10-2023-0189201 A',
-    title: '휴머노이드 로봇의 비전 기반 폐루프 액추에이터 구동 시스템',
-    assignee: 'Tesla, Inc.',
-    country: 'KR',
-    filingDate: '2023-04-10',
-    status: 'PENDING'
-  },
-  {
-    id: 'fam-1-ep',
-    patentNumber: 'EP 4,198,203 A1',
-    title: 'Actuation and Spatial Vision System for Humanoid Robots',
-    assignee: 'Tesla, Inc.',
-    country: 'EP',
-    filingDate: '2023-04-12',
-    status: 'PENDING'
-  },
-  {
-    id: 'fam-2',
-    patentNumber: 'US 10,882,192 B1',
-    title: 'Dynamic Balancing and Whole-Body Impedance Control in Bipedal Robots',
-    assignee: 'Boston Dynamics, Inc.',
-    country: 'US',
-    filingDate: '2021-08-20',
-    status: 'LITIGATED'
+    id: 'disp-2',
+    targetPatent: 'Boston Dynamics US 10,882,192 B1 (전신 동역학 밸런싱 제어)',
+    plaintiffArgument: '원고는 피고의 보행 로봇 전신 임피던스 제어기가 무게중심(CoM)과 영모멘트점(ZMP)을 실시간 연동하는 기본 특허를 침해한다고 경고장 발송.',
+    defenseStrategy: '신경망 기반 잠재 공간(Latent Space) 직접 액션 매핑 방식을 적용하여 전통적 ZMP 수치 해석 파이프라인을 바이패스(Bypass)함을 입증.',
+    successProbability: 86,
+    recommendedModifications: [
+      '물리 수치 모델 기반 제어식을 End-to-End 강화학습 정책 네트워크로 전면 교체',
+      '발목 접촉 감지 센서를 압력 그리드에서 6축 F/T 센서리스 추정기로 대체'
+    ]
   }
 ];

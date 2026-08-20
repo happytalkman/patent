@@ -6,6 +6,7 @@ import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/Sidebar';
 import { MobileNav } from './components/layout/MobileNav';
 import { DashboardView } from './components/dashboard/DashboardView';
+import { PatentCopilotView } from './components/copilot/PatentCopilotView';
 import { PatentTrendsView } from './components/dashboard/PatentTrendsView';
 import { FtoSimulatorView } from './components/fto/FtoSimulatorView';
 import { SpatialMapView } from './components/spatial/SpatialMapView';
@@ -21,6 +22,8 @@ export function AppContent() {
     switch (activeTab) {
       case 'dashboard':
         return <DashboardView setActiveTab={setActiveTab} />;
+      case 'copilot':
+        return <PatentCopilotView />;
       case 'trends':
         return <PatentTrendsView />;
       case 'fto':

@@ -21,20 +21,16 @@ describe('Phase 3: FTO & Kinematics Simulator', () => {
   it('applies AI design-around suggestion and recalculates conflict risk to safe level', () => {
     render(<FtoSimulatorView />);
     
-    // Find and click the first design-around apply button
-    const applyButtons = screen.getAllByRole('button', { name: /3D 기구학 파라미터 적용/i });
-    expect(applyButtons.length).toBeGreaterThan(0);
+    // Find all unapplied buttons
+    const applyButtons = screen.getAllByRole('button', { name: '3D 기구학 파라미터 적용' });
+    expect(applyButtons.length).toBe(2);
     
+    // Click first suggestion (-45%) -> 78% - 45% = 33%
     fireEvent.click(applyButtons[0]);
-    
-    // Risk should reduce from 78% by 45% -> 33%
-    expect(screen.getByText(/33% \(고위험 충돌\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/33% \(안전 범위\)/i)).toBeInTheDocument();
 
-    // Click second suggestion (impactScore: 25%) -> 33% - 25% = 8% -> min 12% (안전 범위)
-    const remainingApply = screen.getAllByRole('button', { name: /3D 기구학 파라미터 적용/i });
-    if (remainingApply.length > 0) {
-      fireEvent.click(remainingApply[0]);
-      expect(screen.getByText(/12% \(안전 범위\)/i)).toBeInTheDocument();
-    }
+    // Click second suggestion (-25%) -> 33% - 25% = 8% -> capped at min 12%
+    fireEvent.click(applyButtons[1]);
+    expect(screen.getByText(/12% \(안전 범위\)/i)).toBeInTheDocument();
   });
 });

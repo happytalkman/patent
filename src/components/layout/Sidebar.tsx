@@ -7,7 +7,8 @@ import {
   MapPin, 
   Compass, 
   BookOpen, 
-  ShieldAlert 
+  ShieldAlert,
+  Bot
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -18,6 +19,7 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
   const navItems: { id: ActiveTab; label: string; subLabel: string; icon: React.FC<{ className?: string }> }[] = [
     { id: 'dashboard', label: '통합 대시보드', subLabel: 'Command Overview', icon: LayoutDashboard },
+    { id: 'copilot', label: 'AI 특허 코파일럿', subLabel: 'Claims & Disputes', icon: Bot },
     { id: 'trends', label: '특허 동향 분석', subLabel: 'Global Trend Matrix', icon: TrendingUp },
     { id: 'fto', label: '3D 기구학 & FTO', subLabel: 'Kinematics Sandbox', icon: Cpu },
     { id: 'spatial', label: '3D 공간 약도 & 실증', subLabel: 'Nanobanana Testbeds', icon: MapPin },
@@ -38,7 +40,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-left transition-all duration-200 group ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-left transition-all duration-200 group cursor-pointer ${
                 isActive
                   ? 'bg-nexus-panel border border-nexus-cyan/40 text-white shadow-lg shadow-nexus-cyan/10'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-nexus-panel/50 border border-transparent'
@@ -78,7 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
         </div>
 
         <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 px-1">
-          <span>v2.4.0-Production</span>
+          <span>v2.5.0-Production</span>
           <span className="flex items-center gap-1 text-nexus-cyan">
             <span className="w-1.5 h-1.5 rounded-full bg-nexus-cyan" /> Three.js Synced
           </span>
